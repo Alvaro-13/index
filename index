@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil y Repositorio Unificado (Estilo Neumorfismo Kyrios - Tema Claro)</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* =========================================
+           Variables y estilos globales (adaptados a Neumorfismo - Tema Claro)
+           ========================================= */
+        :root {
+            --primary-color: #4CAF50; /* Un verde vibrante para acentos, similar al de la imagen */
+            --background-color: #ebebeb; /* Fondo claro similar al de la calculadora */
+            
+            --text-color: #333333; /* Texto oscuro para el fondo claro */
+            --link-color: #4CAF50; /* Acentos verdes para iconos y enlaces, similar al de la imagen */
+            --subtitle-color: #555555; /* Gris oscuro suave para subtítulos/descripciones */
+            
+            /* Colores de Sombra para Neumorfismo Claro */
+            --neumorphic-light: rgba(255, 255, 255, 0.7); /* Sombra clara, más pronunciada */
+            --neumorphic-dark: rgba(180, 180, 180, 0.4); /* Sombra oscura, más sutil */
+            --base-color: var(--background-color); 
+            
+            --card-radius: 16px;
+            --alert-color: #e74c3c; /* Color de error/alerta (rojo) */
+        }
+
+        body {
+            font-family: -apple-system, blinkmacsystemfont, "segoe ui", roboto, "helvetica neue", arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh; 
+            text-align: center;
+            overflow: hidden; 
+            background-color: var(--background-color); 
+            color: var(--text-color); 
+            
+            user-select: none; 
+            -webkit-user-select: none; 
+            -moz-user-select: none; 
+            -ms-user-select: none; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        #main-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #particles-js {
+            display: none; 
+        }
+
+        .view-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; 
+            justify-content: center;
+            align-items: center; 
+            overflow-y: auto; 
+            box-sizing: border-box;
+            padding-top: 50px; 
+            padding-bottom: 50px; 
+            z-index: 10;
+        }
+
+        .is-active {
+            display: flex;
+        }
+        
+        .profile-card, .apk-container {
+            background: var(--base-color); 
+            padding: 40px 30px; 
+            border-radius: var(--card-radius); 
+            
+            box-shadow: 
+                -8px -8px 16px var(--neumorphic-light), 
+                8px 8px 16px var(--neumorphic-dark);    
+            
+            width: 90%; 
+            max-width: 390px; 
+            text-align: center;
+            position: relative; 
+            margin: auto; 
+            box-sizing: border-box;
+            z-index: 20; 
+            margin-top: -30px; 
+            border: none; 
+        }
+        
+        /* === ESTILOS UNIFICADOS PARA LAS IMÁGENES PRINCIPALES (Perfil y Repositorio) === */
+        .profile-picture { 
+            width: 120px; 
+            height: 120px; 
+            margin: 0 auto 30px; 
+            border-radius: 12%; /* Cuadrado redondeado para ambas */
+            overflow: hidden; 
+            border: none; 
+            background-color: var(--base-color);
+            
+            box-shadow: 
+                -4px -4px 8px var(--neumorphic-light), 
+                4px 4px 8px var(--neumorphic-dark);
+        }
+        
+        .profile-picture img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            display: block; 
+        }
+        /* ============================================================================== */
+
+        .profile-subtitle, .cta-text, .footer {
+            color: var(--text-color);
+            text-shadow: 
+                -1px -1px 2px var(--neumorphic-light), 
+                1px 1px 2px var(--neumorphic-dark),    
+                0 0 5px rgba(0, 0, 0, 0.1); 
+            text-transform: capitalize; 
+        }
+        
+        .profile-title { 
+            margin: 0 0 10px; 
+            font-size: 1.7em; 
+            font-weight: 700;
+            color: var(--text-color);
+            text-shadow: 
+                -1px -1px 2px var(--neumorphic-light), 
+                1px 1px 2px var(--neumorphic-dark),    
+                0 0 5px rgba(0, 0, 0, 0.1); 
+            text-transform: none; 
+        }
+        
+        .profile-title .apellido {
+            text-transform: uppercase;
+        }
+
+        .profile-subtitle { 
+            margin: 0 0 20px; 
+            font-size: 1em; 
+        }
+        
+        .cta-text {
+            font-size: 0.9em; 
+            margin-bottom: 30px; 
+        }
+
+        .footer {
+            margin-top: 35px; 
+            font-size: 0.8em; 
+        }
+
+        .link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; 
+        }
+        
+        .link-item a, 
+        .apk-container .button-link, 
+        .modal-button, 
+        .alert-button {
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+            
+            border-radius: 25px; 
+            
+            transition: all 0.2s ease-in-out;
+            
+            padding: 15px 22px; 
+            font-size: 1em; 
+            font-weight: 600; 
+            
+            background-color: var(--base-color);
+            border: none;
+            
+            box-shadow: 
+                inset 5px 5px 10px var(--neumorphic-dark),    
+                inset -5px -5px 10px var(--neumorphic-light); 
+            
+            color: var(--text-color);
+            text-shadow: 
+                -1px -1px 1px var(--neumorphic-light), 
+                1px 1px 1px var(--neumorphic-dark); 
+            text-transform: capitalize; 
+        }
+        
+        .apk-container .button-link {
+            margin: 12px 0; 
+        }
+
+        .link-item i {
+            margin-right: 10px; 
+            color: var(--link-color);
+        }
+
+        .modal-button {
+            padding: 12px 18px; 
+            font-size: 0.95em;   
+            flex-grow: 1; 
+            margin: 0 6px; 
+            box-shadow: 
+                -3px -3px 6px var(--neumorphic-light), 
+                3px 3px 6px var(--neumorphic-dark);
+            border-radius: 18px; 
+        }
+        
+        .alert-button {
+            width: 100%;
+            margin-top: 20px; 
+            box-shadow: 
+                -3px -3px 6px var(--neumorphic-light), 
+                3px 3px 6px var(--neumorphic-dark);
+            border-radius: 18px; 
+            background-color: var(--alert-color); 
+            color: #ffffff; 
+        }
+
+        /* --- Hover/Active --- */
+        .link-item a:hover, 
+        .apk-container .button-link:hover,
+        .link-item a:active,
+        .apk-container .button-link:active,
+        .modal-button:hover,
+        .modal-button:active,
+        .alert-button:hover,
+        .alert-button:active {
+            box-shadow: 
+                -5px -5px 10px var(--neumorphic-light), 
+                5px 5px 10px var(--neumorphic-dark);
+            
+            color: var(--text-color); 
+            transform: scale(0.99);
+        }
+        
+        #modal-confirm-btn {
+            background-color: var(--link-color); 
+            color: #ffffff; 
+        }
+
+        #modal-confirm-btn:hover, #modal-confirm-btn:active {
+            color: #ffffff; 
+            background-color: #388E3C; 
+        }
+
+        .alert-button:hover, .alert-button:active {
+             color: #ffffff; 
+             background-color: #c0392b; 
+        }
+        
+        .link-item a:focus, .apk-container .button-link:focus, 
+        .link-item a:focus-visible, .apk-container .button-link:focus-visible,
+        .modal-button:focus, .modal-button:focus-visible,
+        .alert-button:focus, .alert-button:focus-visible {
+            outline: none !important; 
+            box-shadow: 
+                -5px -5px 10px var(--neumorphic-light), 
+                5px -5px 10px var(--neumorphic-dark) !important; /* Ajuste para sombra neumórfica */
+            transform: scale(0.99);
+        }
+
+        /* === Estilos de Imágenes del Repositorio (SOLO LA MINIATURA DE LA APP) === */
+        /* Eliminamos la regla .app-screenshot-wrapper, ya no es necesaria */
+        /* La clase .profile-picture ahora se encarga de esto */
+
+        .app-screenshot-wrapper { /* Esto ahora solo es un contenedor si lo necesitas, pero los estilos de imagen los toma de .profile-picture */
+            /* Puedes eliminar esta regla o mantenerla vacía si no tiene estilos únicos */
+             width: auto; /* Permite que el contenido determine el tamaño */
+             height: auto;
+             margin: 0 auto 20px;
+             border: none;
+             box-shadow: none;
+             border-radius: 0;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+        }
+
+        /* IMPORTANTE: La imagen dentro de .app-screenshot-wrapper ahora usará los estilos de .profile-picture */
+        /* Entonces, el selector para la imagen dentro del contenedor de la app sería el mismo: */
+        /* .profile-picture img */
+
+
+        .screenshot-added { /* Esto es para la imagen grande de ejemplo, no es la principal del repositorio */
+            width: 100%; 
+            height: auto; 
+            max-width: 100%; 
+            border-radius: 8px; 
+            margin: 15px auto 10px; 
+            display: block; 
+            box-shadow: 
+                -4px -4px 8px var(--neumorphic-light), 
+                4px 4px 8px var(--neumorphic-dark);
+        }
+        
+        .apk-container p:not(.apk-copyright) { 
+            font-size: 0.85em; 
+            color: var(--subtitle-color);
+            margin-bottom: 20px; 
+            padding: 0 5px;
+            line-height: 1.4;
+            text-align: center;
+            text-transform: capitalize;
+        }
+
+        .apk-copyright {
+            margin-top: 10px; 
+            font-size: 0.75em; 
+            color: rgba(0, 0, 0, 0.6); 
+            text-transform: capitalize;
+        }
+
+        #message-input, #key-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px; 
+            margin-bottom: 20px; 
+            border: none;
+            border-radius: 8px; 
+            font-size: 1em; 
+            color: var(--text-color);
+            background: var(--base-color);
+            text-align: left; 
+            resize: vertical; 
+            min-height: 45px; 
+            
+            box-shadow: 
+                inset 2px 2px 5px var(--neumorphic-dark),
+                inset -2px -2px 5px var(--neumorphic-light);
+            transition: box-shadow 0.2s;
+        }
+
+        #message-input::placeholder, #key-input::placeholder {
+            color: rgba(0, 0, 0, 0.4); 
+            text-transform: none;
+        }
+        
+        /* =========================================
+           ESTILOS DEL MODAL DE ALERTA NEUMÓRFICO (Ajustados al tema claro)
+           ========================================= */
+        #alert-modal-box {
+            box-shadow: 
+                -10px -10px 20px var(--neumorphic-light), 
+                10px 10px 20px var(--neumorphic-dark); 
+            
+            animation: bounceIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        #alert-message {
+            color: var(--text-color);
+            font-size: 1em; 
+            margin-bottom: 0;
+            text-transform: capitalize;
+        }
+
+        #key-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100; 
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        #key-modal-overlay.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #key-modal-box {
+            background: var(--base-color);
+            padding: 35px; 
+            border-radius: var(--card-radius);
+            max-width: 320px; 
+            width: 90%;
+            text-align: left;
+            
+            box-shadow: 
+                -10px -10px 20px var(--neumorphic-light), 
+                10px 10px 20px var(--neumorphic-dark); 
+        }
+        
+        #key-modal-box h2 {
+            font-size: 1.1em; 
+            font-weight: 500;
+            color: var(--text-color);
+            margin: 0 0 20px; 
+            text-transform: capitalize; 
+        }
+
+        #modal-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px; 
+            margin-top: 25px; 
+        }
+
+        #modal-confirm-btn {
+            background-color: var(--link-color); 
+            color: #ffffff; 
+            font-weight: 700;
+            box-shadow: 
+                -3px -3px 6px var(--neumorphic-dark), 
+                3px 3px 6px var(--neumorphic-light);
+        }
+        
+        #alert-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            z-index: 200; 
+        }
+        
+        #alert-modal-box {
+            background: var(--base-color);
+            padding: 35px; 
+            border-radius: var(--card-radius);
+            max-width: 300px; 
+            width: 85%;
+            text-align: center;
+            
+            box-shadow: 
+                -10px -10px 20px var(--neumorphic-light), 
+                10px 10px 20px var(--neumorphic-dark); 
+            
+            animation: bounceIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        #alert-modal-box .icon {
+            font-size: 3em; 
+            color: var(--alert-color); 
+            margin-bottom: 18px; 
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.2), 
+                -1px -1px 2px rgba(255, 255, 255, 0.2);
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <div id="main-wrapper">
+        
+        <div id="profile-view" class="view-container is-active">
+            <div class="profile-card">
+                
+                <div class="profile-picture">
+                    <img src="https://www.dropbox.com/scl/fi/zgkkgwdmc8wl1dwylw3hj/gif_20251001_220116_010.gif?rlkey=pclrb4f24t2w68prj8j22wyh0&st=e6myy5gr&raw=1" alt="Logo Kyrios"> 
+                </div>
+
+                <h1 class="profile-title">RENNI <span class="apellido">VELÁSQUEZ</span></h1>
+                <p class="profile-subtitle"></p>
+                
+                <p class="cta-text">
+                    💻 tu espacio personal en la web. visita mis proyectos y aprende a codear.
+                </p>
+
+                <ul class="link-list">
+                    <li class="link-item main-cta">
+                        <a href="https://alvaro-13.github.io/Web/" target="_blank">
+                            <i class="fa fa-coffee"></i> Recarga de crédito
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="javascript:void(0)" onclick="navigateview('apk-view')"> 
+                            <i class="fab fa-github"></i> mi repositorio
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="javascript:void(0)" onclick="shareProfile()"> 
+                            <i class="fas fa-share-alt"></i> Compartir Perfil
+                        </a>
+                    </li>
+                    <li class="link-item">
+                        <a href="javascript:void(0)" onclick="showwhatsappmodal()">
+                            <i class="fab fa-whatsapp"></i> Contáctame por WhatsApp
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="footer">
+                    © copyright velázquez. all rights reserved.
+                </div>
+            </div>
+        </div>
+
+        <div id="apk-view" class="view-container">
+            <div class="apk-container">
+                
+                <div class="profile-picture"> 
+                    <img src="https://www.dropbox.com/scl/fi/zgkkgwdmc8wl1dwylw3hj/gif_20251001_220116_010.gif?rlkey=pclrb4f24t2w68prj8j22wyh0&st=rdkbc87c&raw=1" alt="foto de perfil de VELÁSQUEZ">
+                </div>
+
+                <p>
+                    **¡Hola! Soy RENNI VELÁSQUEZ.** Encuentra las últimas versiones de mis proyectos y haz clic en el enlace para descargarlos.
+                </p>
+
+                <a class="button-link" href="javascript:void(0)" 
+                    onclick="showkeymodal('https://www.mediafire.com/file/5iq0dbbck8hfrit/magis_4.29.2.apk/file')">
+                    <i class="fas fa-mobile-alt"></i> Instalar APK en el celular Android
+                </a>
+
+                <a class="button-link" href="javascript:void(0)" 
+                    onclick="showkeymodal('https://www.mediafire.com/file/s3vkn1m4gq1n7sr/base.apk/file')">
+                    <i class="fas fa-tv"></i> Instalar APK en PC, Smart TV, TVBox
+                </a>
+
+                <img class="screenshot-added" 
+                    src="https://www.dropbox.com/scl/fi/m40g3ecczlx4zi3t9kylr/screenshot_20251005_235903.jpg?rlkey=sq5mlzpnss00832r5yvs8lenq&st=rdkbc87c&raw=1" 
+                    alt="screenshot del repositorio adicional">
+                <p class="apk-copyright">
+                    © RENNI projects
+                </p>
+                
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="key-modal-overlay">
+        <div id="key-modal-box">
+            <h2 id="modal-title"></h2>
+            <textarea id="message-input" placeholder="Escribe tu mensaje aquí..." style="display:none;"></textarea>
+            <input type="password" id="key-input" placeholder="Clave (8 dígitos)" maxlength="8" style="display:none;">
+            
+            <div id="modal-actions">
+                <button class="modal-button" id="modal-cancel-btn">Cancelar</button>
+                <button class="modal-button" id="modal-confirm-btn">Acceder / Enviar</button>
+            </div>
+        </div>
+    </div>
+    <div id="alert-modal-overlay">
+        <div id="alert-modal-box">
+            <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <p id="alert-message"></p>
+            <button class="alert-button" onclick="hideneumalert()">Entendido</button>
+        </div>
+    </div>
+    <script>
+        // === Configuración y elementos del Modal ===
+        const correct_key = "11365759";
+        const WHATSAPP_BASE_URL = "https://wa.me/59171664587"; 
+        
+        const KEY_USAGE_MARKER = 'key_used_marker'; 
+        const LAST_USED_KEY = 'last_successful_key'; 
+
+        const modalOverlay = document.getElementById('key-modal-overlay');
+        const modalTitle = document.getElementById('modal-title');
+        
+        const keyInput = document.getElementById('key-input');
+        const messageInput = document.getElementById('message-input');
+        
+        const confirmBtn = document.getElementById('modal-confirm-btn');
+        const cancelBtn = document.getElementById('modal-cancel-btn');
+        
+        const alertOverlay = document.getElementById('alert-modal-overlay');
+        const alertMessage = document.getElementById('alert-message');
+        
+        let currentMode = ''; 
+        let currentTargetUrl = '';
+
+
+        function hidekeymodal() {
+            modalOverlay.classList.remove('is-visible');
+            keyInput.value = '';
+            messageInput.value = '';
+            keyInput.style.display = 'none';
+            messageInput.style.display = 'none';
+            confirmBtn.style.backgroundColor = 'var(--link-color)'; 
+            confirmBtn.style.color = '#ffffff'; 
+        }
+
+        function showneumalert(message) {
+            alertMessage.textContent = message;
+            alertOverlay.style.display = 'flex';
+            setTimeout(() => {
+                alertOverlay.querySelector('.alert-button').focus();
+            }, 50);
+        }
+
+        function hideneumalert() {
+            alertOverlay.style.display = 'none';
+        }
+        
+        function showkeymodal(url) {
+            currentMode = 'key';
+            currentTargetUrl = url;
+            
+            const isKeyUsed = localStorage.getItem(KEY_USAGE_MARKER);
+            const storedKey = localStorage.getItem(LAST_USED_KEY);
+
+            if (isKeyUsed === 'true' && storedKey === correct_key) {
+                 showneumalert("⚠️ Esta clave ya ha sido utilizada en este dispositivo (navegador). No se permite el reingreso.");
+                 return; 
+            }
+
+            modalTitle.innerHTML = '<i class="fas fa-lock"></i> Por favor, ingresa la clave de acceso (8 dígitos):';
+            keyInput.style.display = 'block';
+            
+            confirmBtn.textContent = 'Acceder';
+            confirmBtn.style.backgroundColor = 'var(--link-color)'; 
+            confirmBtn.style.color = '#ffffff'; 
+            
+            modalOverlay.classList.add('is-visible');
+            setTimeout(() => { keyInput.focus(); }, 50); 
+        }
+
+        function attemptkeyaccess() {
+            const key = keyInput.value.trim();
+            
+            if (key === correct_key) {
+                localStorage.setItem(KEY_USAGE_MARKER, 'true');
+                localStorage.setItem(LAST_USED_KEY, correct_key); 
+
+                window.open(currentTargetUrl, '_blank');
+                hidekeymodal();
+                
+            } else {
+                showneumalert("❌ Clave incorrecta. Inténtalo de nuevo.");
+                keyInput.value = '';
+                keyInput.focus();
+            }
+        }
+        
+        function showwhatsappmodal() {
+            currentMode = 'whatsapp';
+            
+            modalTitle.innerHTML = '<i class="fab fa-whatsapp"></i> Escribe tu mensaje para contactarme:';
+            messageInput.style.display = 'block';
+            messageInput.style.minHeight = '100px'; 
+            messageInput.placeholder = "¡Hola RENNI VELÁSQUEZ! Quisiera consultarte sobre...";
+            
+            confirmBtn.textContent = 'Enviar a WhatsApp';
+            confirmBtn.style.backgroundColor = '#25d366'; 
+            confirmBtn.style.color = '#ffffff';
+
+            modalOverlay.classList.add('is-visible');
+            setTimeout(() => { messageInput.focus(); }, 50);
+        }
+        
+        function sendwhatsappmessage() {
+            const message = messageInput.value.trim();
+            
+            if (message.length < 5) {
+                showneumalert("❌ ¡Escribe algo! Por favor, ingresa un mensaje más detallado (mínimo 5 letras).");
+                messageInput.focus();
+                return;
+            }
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `${WHATSAPP_BASE_URL}?text=${encodedMessage}`;
+            
+            window.open(whatsappUrl, '_blank');
+            hidekeymodal();
+        }
+        
+        async function shareProfile() {
+            const shareData = {
+                title: document.title, 
+                text: '¡Hola! Te comparto mi espacio personal en la web, donde puedes ver mis proyectos. ¡Visítalo ahora!',
+                url: window.location.href 
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                    console.log('Perfil compartido con éxito.');
+                } catch (error) {
+                    if (error.name !== 'AbortError') {
+                        console.error('Error al compartir:', error);
+                        showneumalert("Hubo un error al intentar compartir. Por favor, inténtalo de nuevo.");
+                    }
+                }
+            } else {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    try {
+                        await navigator.clipboard.writeText(shareData.url);
+                        showneumalert("✅ Enlace copiado al portapapeles. ¡Compártelo ahora!");
+                    } catch (err) {
+                        console.error('Error al copiar (Clipboard API):', err);
+                        fallbackCopyTextToClipboard(shareData.url); 
+                    }
+                } else {
+                    fallbackCopyTextToClipboard(shareData.url);
+                }
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); 
+            
+            try {
+                document.execCommand('copy');
+                showneumalert("✅ Enlace copiado al portapapeles. ¡Compártelo ahora!");
+            } catch (err) {
+                showneumalert(`❌ Tu navegador no soporta la copia automática. Copia manualmente: ${text}`);
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+
+        confirmBtn.addEventListener('click', function() {
+            if (currentMode === 'key') {
+                attemptkeyaccess();
+            } else if (currentMode === 'whatsapp') {
+                sendwhatsappmessage();
+            }
+        });
+
+        cancelBtn.addEventListener('click', hidekeymodal);
+
+        keyInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && currentMode === 'key') {
+                e.preventDefault(); 
+                attemptkeyaccess();
+            }
+        });
+        
+        const profileview = document.getElementById('profile-view');
+        const apkview = document.getElementById('apk-view');
+        
+        function navigateview(targetid, pushtohistory = true) {
+            if (document.activeElement) document.activeElement.blur();
+            profileview.classList.remove('is-active');
+            apkview.classList.remove('is-active');
+            document.getElementById(targetid).classList.add('is-active');
+            
+            if (pushtohistory) {
+                if (window.location.hash !== '#' + targetid) {
+                    const newhash = (targetid === 'profile-view') ? '' : '#' + targetid;
+                    history.pushState({ view: targetid }, '', window.location.pathname + newhash);
+                }
+            }
+        }
+        
+        function switchview(targetid) {
+            profileview.classList.remove('is-active');
+            apkview.classList.remove('is-active');
+            document.getElementById(targetid).classList.add('is-active');
+        }
+
+        window.addEventListener('popstate', function(event) {
+            const targetview = (event.state && event.state.view) ? event.state.view : 'profile-view';
+            switchview(targetview);
+        });
+
+        function initializeview() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash === 'apk-view') {
+                switchview('apk-view');
+                history.replaceState({ view: 'apk-view' }, '', window.location.pathname + '#apk-view');
+            } else {
+                switchview('profile-view');
+                history.replaceState({ view: 'profile-view' }, '', window.location.pathname);
+            }
+        }
+
+        initializeview();
+        
+        document.addEventListener('click', function(e) {
+            if (document.activeElement && 
+                (document.activeElement.tagName === 'A' || document.activeElement.tagName === 'BUTTON')) {
+                document.activeElement.blur(); 
+            }
+        });
+        
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const particlescontainer = document.getElementById('particles-js');
+        if (particlescontainer) particlescontainer.appendChild(canvas);
+        
+        let w, h, particles;
+        const particle_count = 60; 
+
+        function resizecanvas() {
+            w = window.innerWidth;
+            h = window.innerHeight;
+            canvas.width = w;
+            canvas.height = h;
+        }
+
+        class particle {
+            constructor() {
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.radius = Math.random() * 0.8 + 0.2; 
+                this.vx = Math.random() * 2 - 1.0; 
+                this.vy = Math.random() * 2 - 1.0; 
+                this.color = "rgba(0, 0, 0, 0.4)"; 
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) {
+                    this.reset();
+                }
+                
+                this.draw();
+            }
+
+            reset() {
+                if (this.x < 0) this.x = w;
+                else if (this.x > w) this.x = 0;
+                
+                if (this.y < 0) this.y = h;
+                else if (this.y > h) this.y = 0;
+
+                this.vx = Math.random() * 2 - 1.0;
+                this.vy = Math.random() * 2 - 1.0;
+                this.radius = Math.random() * 0.8 + 0.2; 
+            }
+        }
+
+        function initparticles() {
+            particles = [];
+            for (let i = 0; i < particle_count; i++) {
+                particles.push(new particle());
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.fillStyle = 'rgba(235, 235, 235, 0.99)'; 
+            ctx.fillRect(0, 0, w, h);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+            }
+        }
+
+        window.addEventListener('resize', resizecanvas);
+        resizecanvas();
+        initparticles();
+        animate();
+    </script>
+</body>
+</html>
